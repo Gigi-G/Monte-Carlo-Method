@@ -8,13 +8,15 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { DescriptionComponent } from './description/description.component';
 import { MathjaxComponent } from './mathjax/mathjax.component';
 import { GlobalService } from './global.service';
+import { ExampleComponent } from './example/example.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
     DescriptionComponent,
-    MathjaxComponent
+    MathjaxComponent,
+    ExampleComponent
   ],
   imports: [
     BrowserModule,

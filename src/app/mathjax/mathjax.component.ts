@@ -16,17 +16,13 @@ export class MathjaxComponent implements OnChanges {
   mathJaxObject; 
   ngOnChanges(changes: SimpleChanges) {
    if (changes['content']) {
-    // console.log("content chnaged")
       this.renderMath()
     }
   }
   
   renderMath(){
-  // console.log("render math")
-// MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 
   this.mathJaxObject  = this.gs.nativeGlobal()['MathJax'] ;
-  //setInterval(()=>{},1) 
   let angObj = this;
   setTimeout(()=>{
     console.log("1234")

@@ -1,0 +1,82 @@
+<a id="Example"></a>
+<br><br><br>
+<h2>Example:</h2>
+<p>
+    At this point, we can take at look an real example.<br><br>
+</p>
+<div style="display: flex; align-items: center; flex-direction: column; width: auto; height: auto;">
+    <img alt = "Lake Garda" id = "SourceImage" src = "assets/img/Lake Garda.png" style="width: 50%; height: auto;  border-style: solid;">
+</div><br>
+<p>
+    This is a photo of Lake Garda taken at a height of 10 Km. <br>
+    The real dimensions of the image, which are different from those of representation, are:
+</p>
+<ul>
+    <li>width: 350px</li>
+    <li>height: 514px</li>
+</ul>
+<p>
+    Now, we want to calculate the area of ​​Lake Garda using the Monte Carlo method, so we need to generate X random dots within the image.
+    We, also, use two colors to distinguish the dots: 
+</p>
+<ul>
+    <li><span style="color: red;">red</span> for earth dots;</li>
+    <li><span style="color: black;">black</span> for lake dots.</li>
+</ul>
+<p>
+    First of all, we try to calculate the lake area using only 100 dots.
+</p>
+<div *ngFor = "let content of contents; let i = index">
+    <div *ngIf = "i == 0; else elseBlock">
+        <div>
+            <button type="button" class="btn btn-primary btn-block" (click)="exampleRun(100, i+1)">Part {{content}}</button><br>
+            <div id = "D{{content}}" style="display: none; align-items: center; flex-direction: column; width: auto; height: auto;">
+                <canvas id="Canvas{{content}}" class="video"></canvas><br>
+                <div class="form-group row">
+                    <label for="E{{content}}" class="col-sm-2 col-form-label">Earth dots:</label>
+                    <div class="col-sm-10">
+                        <input id = "E{{content}}" class="form-control" type="text" placeholder="None">
+                    </div>
+                    <label for="L{{content}}" class="col-sm-2 col-form-label">Lake dots:</label>
+                    <div class="col-sm-10">
+                        <input id = "L{{content}}" class="form-control" type="text" placeholder="None">
+                    </div>
+                    <label for="A{{content}}" class="col-sm-2 col-form-label">Lake area:</label>
+                    <div class="col-sm-10">
+                        <input id = "A{{content}}" class="form-control" type="text" placeholder="None">
+                    </div>
+                </div>
+            </div><br>
+        </div>
+    </div>
+    <ng-template #elseBlock>
+        <div id = "C{{content}}" style = "display: none;">
+            <p>
+                {{numberDots(100, i+1)}} dots.
+            </p>
+            <button type="button" class="btn btn-primary btn-block" (click)="exampleRun(100, i+1)">Part {{content}}</button><br>
+            <div id = "D{{content}}" style="display: none; align-items: center; flex-direction: column; width: auto; height: auto;">
+                <canvas id="Canvas{{content}}" class="video"></canvas><br>
+                <div class="form-group row">
+                    <label for="E{{content}}" class="col-sm-2 col-form-label">Earth dots:</label>
+                    <div class="col-sm-10">
+                        <input id = "E{{content}}" class="form-control" type="text" placeholder="None">
+                    </div>
+                    <label for="L{{content}}" class="col-sm-2 col-form-label">Lake dots:</label>
+                    <div class="col-sm-10">
+                        <input id = "L{{content}}" class="form-control" type="text" placeholder="None">
+                    </div>
+                    <label for="A{{content}}" class="col-sm-2 col-form-label">Lake area:</label>
+                    <div class="col-sm-10">
+                        <input id = "A{{content}}" class="form-control" type="text" placeholder="None">
+                    </div>
+                </div>
+            </div><br>
+        </div>
+    </ng-template>
+</div><br><br>
+<div id = "C8" style = "display: none;">
+    <p>
+        Now let's set the confidence level &alpha; = 0.05.
+    </p>
+</div>
