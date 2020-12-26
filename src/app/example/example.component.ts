@@ -1,4 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChartDataSets } from 'chart.js';
+import { LineChartComponent } from '../line-chart/line-chart.component';
 
 @Component({
   selector: 'app-example',
@@ -6,11 +8,14 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./example.component.scss']
 })
 export class ExampleComponent implements OnInit {
+
   img:HTMLImageElement;
   canvas:HTMLCanvasElement;
   image:HTMLImageElement;
   context:CanvasRenderingContext2D;
   contents:string[] = ['1', '2', '3', '4', '5', '6', '7'];
+  areaVal:number[] = [0, 0, 0, 0, 0, 0, 0];
+  @ViewChild(LineChartComponent) chart:LineChartComponent;
 
   constructor() { }
 
@@ -56,6 +61,13 @@ export class ExampleComponent implements OnInit {
     }
     else {
       (document.getElementById("C" + (i+1)) as HTMLDivElement).style.cssText = "display: flex;";
+      (document.getElementById("C" + (i+2)) as HTMLDivElement).style.cssText = "display: block;";
+      this.chart.lineChartData.push({data: [370, 370, 370, 370, 370, 370, 370], label: "Real area"});
+      this.chart.lineChartColors.push(
+        {
+          borderColor: 'red',
+          backgroundColor: 'rgba(255,255,255,0)',
+      });
     }
     (document.getElementById("E" + i) as HTMLInputElement).value = data[0].toString();
     (document.getElementById("L" + i) as HTMLInputElement).value = data[1].toString();
@@ -71,6 +83,8 @@ export class ExampleComponent implements OnInit {
       this.canvas.height = this.image.height;
       this.context.drawImage(this.image, 0, 0);
       let data:number[] = this.integral_MC(0, this.image.width, 0, this.image.height, num);
+      this.areaVal[i-1] = data[2];
+      this.chart.lineChartData[0].data.push(data[2]);
       this.updateView(data, i);
     }, false);
     this.image.src = this.img.src;
@@ -83,6 +97,8 @@ export class ExampleComponent implements OnInit {
   exampleRun(num:number, i:number): void{
     this.init(this.numberDots(num,i), i);
   }
+
+  
 
   ngOnInit(): void {
   }
