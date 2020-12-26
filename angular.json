@@ -126,8 +126,13 @@
               "devServerTarget": "Monte-Carlo-Method:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "Monte-Carlo-Method"
 }
