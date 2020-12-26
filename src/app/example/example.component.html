@@ -19,9 +19,9 @@
     The image was taken from the following link: <span><a href = "https://mapstyle.withgoogle.com/">https://mapstyle.withgoogle.com/</a></span>
 </p>
 <p>
-    Now, we want to calculate the area of ​​the Lake Garda using the Monte Carlo method, so we need to generate X random dots within the image. 
+    Now, we want to calculate the area of ​​the Lake Garda using the Monte Carlo method, so we need to generate X random dots within the image.
     The results of the areas will be displayed in a chart.
-    We, also, use two colors to distinguish the dots: 
+    We, also, use two colors to distinguish the dots:
 </p>
 <ul>
     <li><span style="color: red;">red</span> for earth dots;</li>
@@ -55,9 +55,9 @@
     </div>
     <ng-template #elseBlock>
         <div id = "C{{content}}" style = "display: none;">
-            <button type="button" class="btn btn-primary btn-block" (click)="exampleRun(100, i+1)">{{numberDots(100, i+1)}} dots</button><br>
+            <button type="button" class="btn btn-primary btn-block" (click)="exampleRun(100, i+1)">{{numberDots(100, i+1)}} dots</button><br><br>
             <div id = "D{{content}}" style="display: none; align-items: center; flex-direction: column; width: auto; height: auto;">
-                <canvas id="Canvas{{content}}" class="video"></canvas><br>
+                <canvas id="Canvas{{content}}" class="video"></canvas><br><br>
                 <div class="form-group row">
                     <label for="E{{content}}" class="col-sm-2 col-form-label">Earth dots:</label>
                     <div class="col-sm-10">
