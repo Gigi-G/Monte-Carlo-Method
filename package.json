@@ -23,6 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
     "@popperjs/core": "^2.6.0",
     "@types/mathjax": "0.0.36",
+    "angular-cli-ghpages": "^1.0.0-rc.1",
     "bootstrap": "^4.5.0",
     "chart.js": "^2.9.4",
     "crypto": "^1.0.1",
