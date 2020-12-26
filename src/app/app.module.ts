@@ -11,6 +11,7 @@ import { MathjaxComponent } from './mathjax/mathjax.component';
 import { GlobalService } from './global.service';
 import { ExampleComponent } from './example/example.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { LineChartComponent } from './line-chart/line-chart.component';
     DescriptionComponent,
     MathjaxComponent,
     ExampleComponent,
-    LineChartComponent
+    LineChartComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
