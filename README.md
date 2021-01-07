@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Live demo
 
-<a href="https://gigi-g.github.io/Monte-Carlo-Method/" target="blank_">Live demo</a>
+<a href="https://gigi-g.github.io/Monte-Carlo-Method/">Live demo</a>
 
 ## Development server
 
