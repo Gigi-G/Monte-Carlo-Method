@@ -33,7 +33,7 @@
 <div *ngFor = "let content of contents; let i = index">
     <div *ngIf = "i == 0; else elseBlock">
         <div>
-            <button type="button" class="btn btn-primary btn-block" (click)="exampleRun(100, i+1)">{{numberDots(100, i+1)}} dots</button><br>
+            <button type="button" class="btn btn-primary btn-block" (click)="exampleRun(100, i+1)">{{numberDots(100, i+1)}} dots wait after click</button><br>
             <div id = "D{{content}}" style="display: none; align-items: center; flex-direction: column; width: auto; height: auto;">
                 <canvas id="Canvas{{content}}" class="video"></canvas><br>
                 <div class="form-group row">
@@ -55,7 +55,7 @@
     </div>
     <ng-template #elseBlock>
         <div id = "C{{content}}" style = "display: none;">
-            <button type="button" class="btn btn-primary btn-block" (click)="exampleRun(100, i+1)">{{numberDots(100, i+1)}} dots</button><br>
+            <button type="button" class="btn btn-primary btn-block" (click)="exampleRun(100, i+1)">{{numberDots(100, i+1)}} dots wait after click</button><br>
             <div id = "D{{content}}" style="display: none; align-items: center; flex-direction: column; width: auto; height: auto;">
                 <canvas id="Canvas{{content}}" class="video"></canvas><br>
                 <div class="form-group row">

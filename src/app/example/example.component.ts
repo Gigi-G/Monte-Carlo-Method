@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ChartDataSets } from 'chart.js';
 import { LineChartComponent } from '../line-chart/line-chart.component';
 
 @Component({
@@ -62,12 +61,14 @@ export class ExampleComponent implements OnInit {
     else {
       (document.getElementById("C" + (i+1)) as HTMLDivElement).style.cssText = "display: flex;";
       (document.getElementById("C" + (i+2)) as HTMLDivElement).style.cssText = "display: block;";
-      this.chart.lineChartData.push({data: [370, 370, 370, 370, 370, 370, 370], label: "Real area"});
-      this.chart.lineChartColors.push(
-        {
-          borderColor: 'red',
-          backgroundColor: 'rgba(255,255,255,0)',
-      });
+      if(this.chart.lineChartColors.length < 2) {
+        this.chart.lineChartData.push({data: [370, 370, 370, 370, 370, 370, 370], label: "Real area"});
+        this.chart.lineChartColors.push(
+          {
+            borderColor: 'red',
+            backgroundColor: 'rgba(255,255,255,0)',
+        });
+      }
     }
     (document.getElementById("E" + i) as HTMLInputElement).value = data[0].toString();
     (document.getElementById("L" + i) as HTMLInputElement).value = data[1].toString();
@@ -84,7 +85,11 @@ export class ExampleComponent implements OnInit {
       this.context.drawImage(this.image, 0, 0);
       let data:number[] = this.integral_MC(0, this.image.width, 0, this.image.height, num);
       this.areaVal[i-1] = data[2];
-      this.chart.lineChartData[0].data.push(data[2]);
+      if(typeof this.chart.lineChartData[0].data[i-1] !== 'undefined') {
+	      this.chart.lineChartData[0].data[i-1] = data[2];
+      } else {
+	      this.chart.lineChartData[0].data.push(data[2]);
+      }
       this.updateView(data, i);
     }, false);
     this.image.src = this.img.src;
@@ -93,6 +98,8 @@ export class ExampleComponent implements OnInit {
   numberDots(num:number, i:number):number {
     return num*Math.pow(10,i-1);
   }
+
+
 
   exampleRun(num:number, i:number): void{
     this.init(this.numberDots(num,i), i);
