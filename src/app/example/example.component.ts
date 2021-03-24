@@ -70,6 +70,7 @@ export class ExampleComponent implements OnInit {
         });
       }
     }
+    this.chart.updateView();
     (document.getElementById("E" + i) as HTMLInputElement).value = data[0].toString();
     (document.getElementById("L" + i) as HTMLInputElement).value = data[1].toString();
     (document.getElementById("A" + i) as HTMLInputElement).value = data[2].toString();
