@@ -31,11 +31,20 @@ export class LineChartComponent implements OnInit {
 
   lineChartType = 'line';
 
-  lineChartErrorBars = [];
+  lineChartErrorBars = [
+    {
+      '100': null, 
+      '1000': null, 
+      '10000': null, 
+      '100000': null, 
+      '1000000': null, 
+      '10000000': null
+    }
+    , {}];
 
   private createLineChartDataset(): any {
     let lineChartDataset = {
-      labels: ['100', '1000', '100000', '1000000', '10000000', '100000000'],
+      labels: ['100', '1000', '10000', '100000', '1000000', '10000000'],
       datasets: [],
     };
     let datasets = {};
