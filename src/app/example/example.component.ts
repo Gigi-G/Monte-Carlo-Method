@@ -105,6 +105,7 @@ export class ExampleComponent implements OnInit {
       } else {
 	      this.chart.lineChartData[0].data.push(data[2]);
       }
+      this.chart.lineChartErrorBars[0][num.toString()] = {plus: confidenceInt[1] - data[2], minus: confidenceInt[0] + data[2]};
       this.updateView(data, i, confidenceInt);
     }, false);
     this.image.src = this.img.src;
