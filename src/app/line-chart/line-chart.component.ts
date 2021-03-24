@@ -14,11 +14,13 @@ export class LineChartComponent implements OnInit {
 
   constructor() { }
 
+  chart:Chart = null;
+
+  lineChartDataSet: ChartData = null;
+
   lineChartData: ChartDataSets[] = [
     { data: [], label: 'Estimated area'}
   ];
-
-  lineChartLabels: Label[] = ['100', '1000', '100000', '1000000', '10000000', '100000000', '1000000000'];
 
   lineChartColors: Color[] = [
     {
@@ -33,7 +35,7 @@ export class LineChartComponent implements OnInit {
 
   private createLineChartDataset(): any {
     let lineChartDataset = {
-      labels: ['100', '1000', '100000', '1000000', '10000000', '100000000', '1000000000'],
+      labels: ['100', '1000', '100000', '1000000', '10000000', '100000000'],
       datasets: [],
     };
     let datasets = {};
@@ -50,9 +52,9 @@ export class LineChartComponent implements OnInit {
     return lineChartDataset;
   }
 
-  public updateView(): void {
+  public initView(): void {
     let ctx = (document.getElementById("canvas") as HTMLCanvasElement).getContext("2d");
-    new Chart(ctx, {
+    this.chart = new Chart(ctx, {
       type: this.lineChartType,
       data: this.createLineChartDataset(),
       options: {
@@ -60,13 +62,26 @@ export class LineChartComponent implements OnInit {
         legend: {
           position: 'top',
         },
+        scales: {
+          yAxes: [{
+            ticks: {
+                min: -2500,
+                max: 2500
+            }
+        }]
+        },
         plugins: [pluginErrorBars]
       },
     });
   }
 
+  public updateView(): void {
+    this.chart.data = this.createLineChartDataset();
+    this.chart.update();
+  }
+
   ngOnInit(): void {
-    this.updateView();
+    this.initView();
   }
 
 }
