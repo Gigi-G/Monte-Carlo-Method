@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { LineChartComponent } from '../line-chart/line-chart.component';
+import * as Quantile from 'distributions-normal-quantile';
 
 @Component({
   selector: 'app-example',
@@ -12,9 +13,10 @@ export class ExampleComponent implements OnInit {
   canvas:HTMLCanvasElement;
   image:HTMLImageElement;
   context:CanvasRenderingContext2D;
-  contents:string[] = ['1', '2', '3', '4', '5', '6', '7'];
-  areaVal:number[] = [0, 0, 0, 0, 0, 0, 0];
+  contents:string[] = ['1', '2', '3', '4', '5', '6'];
+  areaVal:number[] = [0, 0, 0, 0, 0, 0];
   @ViewChild(LineChartComponent) chart:LineChartComponent;
+  //quantile = require("distributions-normal-quantile");
 
   constructor() { }
 
@@ -53,16 +55,25 @@ export class ExampleComponent implements OnInit {
     return r;
   }
 
-  private updateView(data:number[], i:number):void {
+  private confidenceInterval(alpha:number, Nh:number, N:number, imageArea:number, stimateArea:number):number[] {
+    let r:number[] = [0, 0];
+    let Z = Quantile(1-(alpha/2));
+    let p = Nh/N;
+    r[0] = stimateArea - (Z * Math.sqrt((p*(1-p))/N)*imageArea);
+    r[1] = stimateArea + (Z * Math.sqrt((p*(1-p))/N)*imageArea);
+    return r;
+  }
+
+  private updateView(data:number[], i:number, confidenceInt:number[]):void {
     (document.getElementById("D" + i) as HTMLDivElement).style.display = "flex";
-    if((i+1) < 8) {
+    if((i+1) < 7) {
       (document.getElementById("C" + (i+1)) as HTMLDivElement).style.cssText = "display: flex; align-items: center; flex-direction: column; width: auto; height: auto;";
     }
     else {
       (document.getElementById("C" + (i+1)) as HTMLDivElement).style.cssText = "display: flex;";
       (document.getElementById("C" + (i+2)) as HTMLDivElement).style.cssText = "display: block;";
       if(this.chart.lineChartColors.length < 2) {
-        this.chart.lineChartData.push({data: [370, 370, 370, 370, 370, 370, 370], label: "Real area"});
+        this.chart.lineChartData.push({data: [370, 370, 370, 370, 370, 370], label: "Real area"});
         this.chart.lineChartColors.push(
           {
             borderColor: 'red',
@@ -74,6 +85,7 @@ export class ExampleComponent implements OnInit {
     (document.getElementById("E" + i) as HTMLInputElement).value = data[0].toString();
     (document.getElementById("L" + i) as HTMLInputElement).value = data[1].toString();
     (document.getElementById("A" + i) as HTMLInputElement).value = data[2].toString();
+    (document.getElementById("I" + i) as HTMLInputElement).value = "[" + confidenceInt[0].toString() + ", " + confidenceInt[1].toString() + "]";
   }
 
   private init(num:number, i:number):void {
@@ -85,13 +97,15 @@ export class ExampleComponent implements OnInit {
       this.canvas.height = this.image.height;
       this.context.drawImage(this.image, 0, 0);
       let data:number[] = this.integral_MC(0, this.image.width, 0, this.image.height, num);
+      let confidenceInt:number[] = this.confidenceInterval(0.01, data[1], num, this.image.width*this.image.height, data[2]);
+      console.log("Confidence Interval: [" + confidenceInt + "]");
       this.areaVal[i-1] = data[2];
       if(typeof this.chart.lineChartData[0].data[i-1] !== 'undefined') {
 	      this.chart.lineChartData[0].data[i-1] = data[2];
       } else {
 	      this.chart.lineChartData[0].data.push(data[2]);
       }
-      this.updateView(data, i);
+      this.updateView(data, i, confidenceInt);
     }, false);
     this.image.src = this.img.src;
   }
