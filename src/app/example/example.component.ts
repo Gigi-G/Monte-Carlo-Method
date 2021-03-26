@@ -16,42 +16,61 @@ export class ExampleComponent implements OnInit {
   contents:string[] = ['1', '2', '3', '4', '5', '6'];
   areaVal:number[] = [0, 0, 0, 0, 0, 0];
   @ViewChild(LineChartComponent) chart:LineChartComponent;
-  //quantile = require("distributions-normal-quantile");
 
   constructor() { }
 
+  private getColorIndicesForCoord(x:number, y:number, width:number):number[] {
+    var red = y * (width * 4) + x * 4;
+    return [red, red + 1, red + 2, red + 3];
+  }
+
   private f(x:number, y:number, imageData:ImageData): number {
     let r:number = 0;
-    let pos:number = (x + y * this.image.width)*4;
-    if(!(imageData.data[pos+2] > imageData.data[pos] && imageData.data[pos+2] > imageData.data[pos+1]) && (imageData.data[pos] != 0 || imageData.data[pos+1] != 0 || imageData.data[pos+2] != 0) && (imageData.data[pos] != 255 || imageData.data[pos+1] != 0 || imageData.data[pos+2] != 0)) {
+    let colorIndices:number[] = this.getColorIndicesForCoord(x, y, this.canvas.width);
+    let redIndex = colorIndices[0];
+    let greenIndex = colorIndices[1];
+    let blueIndex = colorIndices[2];
+    if((imageData.data[redIndex] != 172 && imageData.data[greenIndex] != 208 && imageData.data[blueIndex] != 255) && (imageData.data[redIndex] != 0 && imageData.data[greenIndex] != 0 && imageData.data[blueIndex] != 0) && (imageData.data[redIndex] != 255 && imageData.data[greenIndex] != 0 && imageData.data[blueIndex] != 0)) {
+      imageData.data[redIndex] = 255;
+      imageData.data[greenIndex] = 0;
+      imageData.data[blueIndex] = 0;
+    } else if ((imageData.data[redIndex] == 172 && imageData.data[greenIndex] == 208 && imageData.data[blueIndex] == 255)){
       r = 1;
-      imageData.data[pos] = 255;
-      imageData.data[pos + 1] = 0;
-      imageData.data[pos + 2] = 0;
-    } else if((imageData.data[pos] != 0 || imageData.data[pos+1] != 0 || imageData.data[pos+2] != 0) && (imageData.data[pos] != 255 || imageData.data[pos+1] != 0 || imageData.data[pos+2] != 0)) {
-      imageData.data[pos] = 0;
-      imageData.data[pos + 1] = 0;
-      imageData.data[pos + 2] = 0;
+      imageData.data[redIndex] = 0;
+      imageData.data[greenIndex] = 0;
+      imageData.data[blueIndex] = 0;
+    }
+    else if ((imageData.data[redIndex] == 0 && imageData.data[greenIndex] == 0 && imageData.data[blueIndex] == 0)) {
+      r = 0.33;
     }
     return r;
   }
 
+  private proportion(x:number):number {
+    let realWidth = 60.06*this.image.width/476;
+    let realHeight = 60.06*this.image.height/476;
+    let realArea = realWidth * realHeight;
+    let imageArea = this.image.width * this.image.height;
+    return realArea * x / imageArea;
+  }
+
   private integral_MC(xMin:number, xMax:number, yMin:number, yMax:number, max_num:number = 100): number[] {
     let r:number[] = [0, 0, 0];
-    let earth:number = 0;
+    let lake:number = 0;
     let imageData:ImageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
     for(let i:number = 0; i < max_num; ++i) {
       let x:number = Math.floor(Math.random() * (xMax - xMin) + xMin);
       let y:number = Math.floor(Math.random() * (yMax - yMin) + yMin);
-      earth += this.f(x, y, imageData);
+      let result:number = this.f(x, y, imageData);
+      lake += result;
     }
-    r[0] = earth;
-    r[1] = max_num - earth;
-    r[2] = (((max_num - earth) * (this.image.width * (2.54/96)) * (this.image.height * (2.54/96)))/max_num)*3.15;
+    r[0] = max_num - lake;
+    r[1] = lake;
+    r[2] = (r[1] /max_num) * (this.canvas.width * this.canvas.height);
     this.context.putImageData(imageData, 0, 0);
     console.log("Earth: " + r[0]);
     console.log("Lake: " + r[1]);
-    console.log("Area: " + r[2]);
+    console.log("Area: " + this.proportion(r[2]));
     return r;
   }
 
@@ -84,8 +103,8 @@ export class ExampleComponent implements OnInit {
     this.chart.updateView();
     (document.getElementById("E" + i) as HTMLInputElement).value = data[0].toString();
     (document.getElementById("L" + i) as HTMLInputElement).value = data[1].toString();
-    (document.getElementById("A" + i) as HTMLInputElement).value = data[2].toString();
-    (document.getElementById("I" + i) as HTMLInputElement).value = "[" + confidenceInt[0].toString() + ", " + confidenceInt[1].toString() + "]";
+    (document.getElementById("A" + i) as HTMLInputElement).value = this.proportion(data[2]).toString();
+    (document.getElementById("I" + i) as HTMLInputElement).value = "[" + this.proportion(confidenceInt[0]).toString() + ", " + this.proportion(confidenceInt[1]).toString() + "]";
   }
 
   private init(num:number, i:number):void {
@@ -95,24 +114,32 @@ export class ExampleComponent implements OnInit {
     this.image.addEventListener('load', e => {
       this.context = this.canvas.getContext('2d');
       this.canvas.height = this.image.height;
+      this.canvas.width = this.image.width;
       this.context.drawImage(this.image, 0, 0);
-      let data:number[] = this.integral_MC(0, this.image.width, 0, this.image.height, num);
+      let data:number[] = this.integral_MC(0, this.canvas.width, 0, this.canvas.height, num);
       let confidenceInt:number[] = this.confidenceInterval(0.01, data[1], num, this.image.width*this.image.height, data[2]);
-      console.log("Confidence Interval: [" + confidenceInt + "]");
+      console.log("Confidence Interval: [" + this.proportion(confidenceInt[0]).toString() + ", " + this.proportion(confidenceInt[1]).toString() + "]");
       this.areaVal[i-1] = data[2];
       if(typeof this.chart.lineChartData[0].data[i-1] !== 'undefined') {
-	      this.chart.lineChartData[0].data[i-1] = data[2];
+	      this.chart.lineChartData[0].data[i-1] = this.proportion(data[2]);
       } else {
-	      this.chart.lineChartData[0].data.push(data[2]);
+	      this.chart.lineChartData[0].data.push(this.proportion(data[2]));
       }
-      this.chart.lineChartErrorBars[0][num.toString()] = {plus: confidenceInt[1] - data[2], minus: confidenceInt[0] + data[2]};
+      this.chart.lineChartErrorBars[0][num.toString()] = {plus: this.proportion(confidenceInt[1] - data[2]), minus: this.proportion(confidenceInt[0] - data[2])};
       this.updateView(data, i, confidenceInt);
     }, false);
     this.image.src = this.img.src;
   }
 
   numberDots(num:number, i:number):number {
-    return num*Math.pow(10,i-1);
+    let dots = num*Math.pow(10,i-1);
+    if(dots == 1000000) {
+      dots = 150000;
+    }
+    else if(dots == 10000000) {
+      dots = 179900;
+    }
+    return dots;
   }
 
 
