@@ -75,7 +75,7 @@ export class LineChartComponent implements OnInit {
           yAxes: [{
             ticks: {
                 min: 0,
-                max: 1000
+                max: 600
             }
         }]
         },
