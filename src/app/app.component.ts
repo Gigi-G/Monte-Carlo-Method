@@ -9,5 +9,5 @@ import { MathjaxComponent } from "./mathjax/mathjax.component"
 export class AppComponent {
   title = 'Monte-Carlo-Method';
   @ViewChild(MathjaxComponent) childView: MathjaxComponent;
-  mathContent = `$$\\frac{superficie_{terreno}}{superficie_{lago}} = \\frac{X}{X - N}$$<br>So you have: $$superficie_{lago} \= \\frac{(X-N) \\times superficie_{terreno}}{X}$$`
+  mathContent = `$$\\frac{area_{earth}}{area_{lake}} = \\frac{X}{X - N}$$<br>So you have: $$area_{lake} \= \\frac{(X-N) \\times area_{earth}}{X}$$`
 }
