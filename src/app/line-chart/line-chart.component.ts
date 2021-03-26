@@ -37,14 +37,14 @@ export class LineChartComponent implements OnInit {
       '1000': null, 
       '10000': null, 
       '100000': null, 
-      '1000000': null, 
-      '10000000': null
+      '150000': null, 
+      '179900': null
     }
     , {}];
 
   private createLineChartDataset(): any {
     let lineChartDataset = {
-      labels: ['100', '1000', '10000', '100000', '1000000', '10000000'],
+      labels: ['100', '1000', '10000', '100000', '150000', '179900'],
       datasets: [],
     };
     let datasets = {};
@@ -74,8 +74,8 @@ export class LineChartComponent implements OnInit {
         scales: {
           yAxes: [{
             ticks: {
-                min: -2500,
-                max: 2500
+                min: 0,
+                max: 1000
             }
         }]
         },
