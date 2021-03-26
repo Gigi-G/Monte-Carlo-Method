@@ -41,17 +41,15 @@ export class ExampleComponent implements OnInit {
       imageData.data[blueIndex] = 0;
     }
     else if ((imageData.data[redIndex] == 0 && imageData.data[greenIndex] == 0 && imageData.data[blueIndex] == 0)) {
-      r = 0.33;
+      r = 1;
     }
     return r;
   }
 
   private proportion(x:number):number {
-    let realWidth = 60.06*this.image.width/476;
-    let realHeight = 60.06*this.image.height/476;
-    let realArea = realWidth * realHeight;
+    let realArea = 2034.81;
     let imageArea = this.image.width * this.image.height;
-    return realArea * x / imageArea;
+    return (realArea * x / imageArea);
   }
 
   private integral_MC(xMin:number, xMax:number, yMin:number, yMax:number, max_num:number = 100): number[] {
