@@ -20,8 +20,10 @@
 </p>
 <p>
     Now, we want to calculate the area of ​​the Lake Garda using the Monte Carlo method, so we need to generate X random dots within the image.
+    In order to determine if a point is inside the lake, the color of the pixel is considered. 
+    If the color has a certain shade of blue then it is considered as a hit and turns black, otherwise it is considered a miss and turns red.
     The results of the areas will be displayed in a chart.
-    We, also, use two colors to distinguish the dots:
+    We use two colors to distinguish the dots:
 </p>
 <ul>
     <li><span style="color: red;">red</span> for earth dots;</li>
