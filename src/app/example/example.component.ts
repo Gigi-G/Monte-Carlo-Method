@@ -63,8 +63,6 @@ export class ExampleComponent implements OnInit {
       let y:number = Math.floor(Math.random() * (yMax - yMin) + yMin);
       let result:number = this.f(x, y, imageData);
       lake += result;
-      console.log(result);
-      console.log(imageData);
     }
     r[0] = max_num - lake;
     r[1] = lake;
