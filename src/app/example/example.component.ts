@@ -30,11 +30,7 @@ export class ExampleComponent implements OnInit {
     let redIndex = colorIndices[0];
     let greenIndex = colorIndices[1];
     let blueIndex = colorIndices[2];
-    if((imageData.data[redIndex] != 172 && imageData.data[greenIndex] != 208 && imageData.data[blueIndex] != 255) && (imageData.data[redIndex] != 0 && imageData.data[greenIndex] != 0 && imageData.data[blueIndex] != 0) && (imageData.data[redIndex] != 255 && imageData.data[greenIndex] != 0 && imageData.data[blueIndex] != 0)) {
-      imageData.data[redIndex] = 255;
-      imageData.data[greenIndex] = 0;
-      imageData.data[blueIndex] = 0;
-    } else if ((imageData.data[redIndex] == 172 && imageData.data[greenIndex] == 208 && imageData.data[blueIndex] == 255)){
+    if ((imageData.data[redIndex] >= 170 && imageData.data[greenIndex] >= 200 && imageData.data[blueIndex] == 255)){
       r = 1;
       imageData.data[redIndex] = 0;
       imageData.data[greenIndex] = 0;
@@ -42,6 +38,11 @@ export class ExampleComponent implements OnInit {
     }
     else if ((imageData.data[redIndex] == 0 && imageData.data[greenIndex] == 0 && imageData.data[blueIndex] == 0)) {
       r = 1;
+    } 
+    else if((imageData.data[redIndex] != 255 && imageData.data[greenIndex] != 0 && imageData.data[blueIndex] != 0)) {
+      imageData.data[redIndex] = 255;
+      imageData.data[greenIndex] = 0;
+      imageData.data[blueIndex] = 0;
     }
     return r;
   }
@@ -49,6 +50,7 @@ export class ExampleComponent implements OnInit {
   private proportion(x:number):number {
     let realArea = 2034.81;
     let imageArea = this.image.width * this.image.height;
+    console.log(x);
     return (realArea * x / imageArea);
   }
 
@@ -61,6 +63,8 @@ export class ExampleComponent implements OnInit {
       let y:number = Math.floor(Math.random() * (yMax - yMin) + yMin);
       let result:number = this.f(x, y, imageData);
       lake += result;
+      console.log(result);
+      console.log(imageData);
     }
     r[0] = max_num - lake;
     r[1] = lake;
