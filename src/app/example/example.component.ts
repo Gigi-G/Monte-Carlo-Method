@@ -30,7 +30,7 @@ export class ExampleComponent implements OnInit {
     let redIndex = colorIndices[0];
     let greenIndex = colorIndices[1];
     let blueIndex = colorIndices[2];
-    if ((imageData.data[redIndex] >= 170 && imageData.data[greenIndex] >= 200 && imageData.data[blueIndex] == 255)){
+    if ((imageData.data[blueIndex] > imageData.data[redIndex]) && (imageData.data[blueIndex] > imageData.data[greenIndex])){
       r = 1;
       imageData.data[redIndex] = 0;
       imageData.data[greenIndex] = 0;
